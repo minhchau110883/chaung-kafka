@@ -1,51 +1,23 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { ChaungKafkaSharedModule } from '../../shared';
+import { ChaungKafkaSharedModule } from 'app/shared';
 import {
-    PointService,
-    PointPopupService,
     PointComponent,
     PointDetailComponent,
-    PointDialogComponent,
-    PointPopupComponent,
+    PointUpdateComponent,
     PointDeletePopupComponent,
     PointDeleteDialogComponent,
     pointRoute,
-    pointPopupRoute,
-    PointResolvePagingParams,
+    pointPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...pointRoute,
-    ...pointPopupRoute,
-];
+const ENTITY_STATES = [...pointRoute, ...pointPopupRoute];
 
 @NgModule({
-    imports: [
-        ChaungKafkaSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        PointComponent,
-        PointDetailComponent,
-        PointDialogComponent,
-        PointDeleteDialogComponent,
-        PointPopupComponent,
-        PointDeletePopupComponent,
-    ],
-    entryComponents: [
-        PointComponent,
-        PointDialogComponent,
-        PointPopupComponent,
-        PointDeleteDialogComponent,
-        PointDeletePopupComponent,
-    ],
-    providers: [
-        PointService,
-        PointPopupService,
-        PointResolvePagingParams,
-    ],
+    imports: [ChaungKafkaSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    declarations: [PointComponent, PointDetailComponent, PointUpdateComponent, PointDeleteDialogComponent, PointDeletePopupComponent],
+    entryComponents: [PointComponent, PointUpdateComponent, PointDeleteDialogComponent, PointDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ChaungKafkaPointModule {}

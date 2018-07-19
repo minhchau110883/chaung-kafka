@@ -1,26 +1,28 @@
 import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil } from 'ng-jhipster';
-
-import { UserRouteAccessService } from '../../shared';
+import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
+import { UserRouteAccessService } from 'app/core';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Campaign } from 'app/shared/model/campaign.model';
+import { CampaignService } from './campaign.service';
 import { CampaignComponent } from './campaign.component';
 import { CampaignDetailComponent } from './campaign-detail.component';
-import { CampaignPopupComponent } from './campaign-dialog.component';
+import { CampaignUpdateComponent } from './campaign-update.component';
 import { CampaignDeletePopupComponent } from './campaign-delete-dialog.component';
+import { ICampaign } from 'app/shared/model/campaign.model';
 
-@Injectable()
-export class CampaignResolvePagingParams implements Resolve<any> {
-
-    constructor(private paginationUtil: JhiPaginationUtil) {}
+@Injectable({ providedIn: 'root' })
+export class CampaignResolve implements Resolve<ICampaign> {
+    constructor(private service: CampaignService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
-        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
-        return {
-            page: this.paginationUtil.parsePage(page),
-            predicate: this.paginationUtil.parsePredicate(sort),
-            ascending: this.paginationUtil.parseAscending(sort)
-      };
+        const id = route.params['id'] ? route.params['id'] : null;
+        if (id) {
+            return this.service.find(id).pipe(map((campaign: HttpResponse<Campaign>) => campaign.body));
+        }
+        return of(new Campaign());
     }
 }
 
@@ -29,16 +31,45 @@ export const campaignRoute: Routes = [
         path: 'campaign',
         component: CampaignComponent,
         resolve: {
-            'pagingParams': CampaignResolvePagingParams
+            pagingParams: JhiResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            defaultSort: 'id,asc',
+            pageTitle: 'Campaigns'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'campaign/:id/view',
+        component: CampaignDetailComponent,
+        resolve: {
+            campaign: CampaignResolve
         },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Campaigns'
         },
         canActivate: [UserRouteAccessService]
-    }, {
-        path: 'campaign/:id',
-        component: CampaignDetailComponent,
+    },
+    {
+        path: 'campaign/new',
+        component: CampaignUpdateComponent,
+        resolve: {
+            campaign: CampaignResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Campaigns'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'campaign/:id/edit',
+        component: CampaignUpdateComponent,
+        resolve: {
+            campaign: CampaignResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Campaigns'
@@ -49,28 +80,11 @@ export const campaignRoute: Routes = [
 
 export const campaignPopupRoute: Routes = [
     {
-        path: 'campaign-new',
-        component: CampaignPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Campaigns'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
-        path: 'campaign/:id/edit',
-        component: CampaignPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'Campaigns'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    },
-    {
         path: 'campaign/:id/delete',
         component: CampaignDeletePopupComponent,
+        resolve: {
+            campaign: CampaignResolve
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Campaigns'

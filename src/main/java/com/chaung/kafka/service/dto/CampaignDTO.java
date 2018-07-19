@@ -1,6 +1,5 @@
 package com.chaung.kafka.service.dto;
 
-
 import java.io.Serializable;
 import java.util.Objects;
 import com.chaung.kafka.domain.enumeration.UserType;
@@ -80,7 +79,7 @@ public class CampaignDTO implements Serializable {
         }
 
         CampaignDTO campaignDTO = (CampaignDTO) o;
-        if(campaignDTO.getId() == null || getId() == null) {
+        if (campaignDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), campaignDTO.getId());

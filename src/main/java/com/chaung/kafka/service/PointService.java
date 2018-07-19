@@ -1,8 +1,11 @@
 package com.chaung.kafka.service;
 
 import com.chaung.kafka.service.dto.PointDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing Point.
@@ -25,13 +28,14 @@ public interface PointService {
      */
     Page<PointDTO> findAll(Pageable pageable);
 
+
     /**
      * Get the "id" point.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    PointDTO findOne(Long id);
+    Optional<PointDTO> findOne(Long id);
 
     /**
      * Delete the "id" point.

@@ -1,9 +1,6 @@
 package com.chaung.kafka.service.dto;
 
-
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -131,7 +128,7 @@ public class PointDTO implements Serializable {
         }
 
         PointDTO pointDTO = (PointDTO) o;
-        if(pointDTO.getId() == null || getId() == null) {
+        if (pointDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), pointDTO.getId());
@@ -155,6 +152,7 @@ public class PointDTO implements Serializable {
             ", paymentType='" + getPaymentType() + "'" +
             ", amount=" + getAmount() +
             ", point=" + getPoint() +
+            ", campaign=" + getCampaignId() +
             "}";
     }
 }

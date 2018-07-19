@@ -1,38 +1,36 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span>Points</span>
-        <button class="btn btn-primary float-right jh-create-entity create-point" [routerLink]="['/', { outlets: { popup: ['point-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-point" [routerLink]="['/point/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create new Point
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="points">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="outletId"><span>Outlet Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="terminalId"><span>Terminal Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="merchantId"><span>Merchant Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="userId"><span>User Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="campaignId"><span>Campaign Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="paymentTransaction"><span>Payment Transaction</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="paymentType"><span>Payment Type</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="amount"><span>Amount</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="point"><span>Point</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="campaignId"><span>Campaign</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="outletId"><span>Outlet Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="terminalId"><span>Terminal Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="merchantId"><span>Merchant Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="userId"><span>User Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="campaignId"><span>Campaign Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="paymentTransaction"><span>Payment Transaction</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="paymentType"><span>Payment Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="amount"><span>Amount</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="point"><span>Point</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="campaignId"><span>Campaign</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let point of points ;trackBy: trackId">
-                <td><a [routerLink]="['../point', point.id ]">{{point.id}}</a></td>
+                <td><a [routerLink]="['/point', point.id, 'view' ]">{{point.id}}</a></td>
                 <td>{{point.outletId}}</td>
                 <td>{{point.terminalId}}</td>
                 <td>{{point.merchantId}}</td>
@@ -44,23 +42,21 @@
                 <td>{{point.point}}</td>
                 <td>
                     <div *ngIf="point.campaignId">
-                        <a [routerLink]="['../campaign', point.campaignId  ]" >{{point.campaignId}}</a>
+                        <a [routerLink]="['../campaign', point.campaignId , 'view' ]" >{{point.campaignId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../point', point.id ]"
+                                [routerLink]="['/point', point.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'point/'+ point.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/point', point.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
                         <button type="submit"
@@ -68,7 +64,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>
                         </button>
                     </div>

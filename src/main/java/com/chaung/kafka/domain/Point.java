@@ -1,5 +1,6 @@
 package com.chaung.kafka.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -50,6 +51,7 @@ public class Point implements Serializable {
     private Integer point;
 
     @ManyToOne
+    @JsonIgnoreProperties("")
     private Campaign campaign;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

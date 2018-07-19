@@ -1,15 +1,14 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { ChaungKafkaTestModule } from '../../../test.module';
-import { PointDeleteDialogComponent } from '../../../../../../main/webapp/app/entities/point/point-delete-dialog.component';
-import { PointService } from '../../../../../../main/webapp/app/entities/point/point.service';
+import { PointDeleteDialogComponent } from 'app/entities/point/point-delete-dialog.component';
+import { PointService } from 'app/entities/point/point.service';
 
 describe('Component Tests', () => {
-
     describe('Point Management Delete Component', () => {
         let comp: PointDeleteDialogComponent;
         let fixture: ComponentFixture<PointDeleteDialogComponent>;
@@ -17,19 +16,13 @@ describe('Component Tests', () => {
         let mockEventManager: any;
         let mockActiveModal: any;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [ChaungKafkaTestModule],
-                declarations: [PointDeleteDialogComponent],
-                providers: [
-                    PointService
-                ]
+                declarations: [PointDeleteDialogComponent]
             })
-            .overrideTemplate(PointDeleteDialogComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(PointDeleteDialogComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(PointDeleteDialogComponent);
             comp = fixture.componentInstance;
             service = fixture.debugElement.injector.get(PointService);
@@ -38,11 +31,13 @@ describe('Component Tests', () => {
         });
 
         describe('confirmDelete', () => {
-            it('Should call delete service on confirmDelete',
-                inject([],
+            it(
+                'Should call delete service on confirmDelete',
+                inject(
+                    [],
                     fakeAsync(() => {
                         // GIVEN
-                        spyOn(service, 'delete').and.returnValue(Observable.of({}));
+                        spyOn(service, 'delete').and.returnValue(of({}));
 
                         // WHEN
                         comp.confirmDelete(123);
@@ -57,5 +52,4 @@ describe('Component Tests', () => {
             );
         });
     });
-
 });

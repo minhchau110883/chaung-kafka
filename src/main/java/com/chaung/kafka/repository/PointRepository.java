@@ -1,13 +1,12 @@
 package com.chaung.kafka.repository;
 
 import com.chaung.kafka.domain.Point;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the Point entity.
+ * Spring Data  repository for the Point entity.
  */
 @SuppressWarnings("unused")
 @Repository

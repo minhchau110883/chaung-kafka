@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.chaung.kafka.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -62,8 +63,10 @@ public class CampaignResourceIntTest {
     @Autowired
     private CampaignRepository campaignRepository;
 
+
     @Autowired
     private CampaignMapper campaignMapper;
+    
 
     @Autowired
     private CampaignService campaignService;
@@ -179,6 +182,7 @@ public class CampaignResourceIntTest {
             .andExpect(jsonPath("$.[*].point").value(hasItem(DEFAULT_POINT)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
+    
 
     @Test
     @Transactional
@@ -445,7 +449,6 @@ public class CampaignResourceIntTest {
             .andExpect(jsonPath("$").isEmpty());
     }
 
-
     @Test
     @Transactional
     public void getNonExistingCampaign() throws Exception {
@@ -459,10 +462,11 @@ public class CampaignResourceIntTest {
     public void updateCampaign() throws Exception {
         // Initialize the database
         campaignRepository.saveAndFlush(campaign);
+
         int databaseSizeBeforeUpdate = campaignRepository.findAll().size();
 
         // Update the campaign
-        Campaign updatedCampaign = campaignRepository.findOne(campaign.getId());
+        Campaign updatedCampaign = campaignRepository.findById(campaign.getId()).get();
         // Disconnect from session so that the updates on updatedCampaign are not directly saved in db
         em.detach(updatedCampaign);
         updatedCampaign
@@ -501,11 +505,11 @@ public class CampaignResourceIntTest {
         restCampaignMockMvc.perform(put("/api/campaigns")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(campaignDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Campaign in the database
         List<Campaign> campaignList = campaignRepository.findAll();
-        assertThat(campaignList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(campaignList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -513,6 +517,7 @@ public class CampaignResourceIntTest {
     public void deleteCampaign() throws Exception {
         // Initialize the database
         campaignRepository.saveAndFlush(campaign);
+
         int databaseSizeBeforeDelete = campaignRepository.findAll().size();
 
         // Get the campaign

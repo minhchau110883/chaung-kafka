@@ -3,87 +3,61 @@ import './vendor.ts';
 import { NgModule, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { Ng2Webstorage, LocalStorageService, SessionStorageService  } from 'ngx-webstorage';
+import { Ng2Webstorage, LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
 import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interceptor';
 import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
-import { ChaungKafkaSharedModule, UserRouteAccessService } from './shared';
-import { ChaungKafkaAppRoutingModule} from './app-routing.module';
+import { ChaungKafkaSharedModule } from 'app/shared';
+import { ChaungKafkaCoreModule } from 'app/core';
+import { ChaungKafkaAppRoutingModule } from './app-routing.module';
 import { ChaungKafkaHomeModule } from './home/home.module';
-import { ChaungKafkaAdminModule } from './admin/admin.module';
 import { ChaungKafkaAccountModule } from './account/account.module';
 import { ChaungKafkaEntityModule } from './entities/entity.module';
-import { PaginationConfig } from './blocks/config/uib-pagination.config';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-import {
-    JhiMainComponent,
-    NavbarComponent,
-    FooterComponent,
-    ProfileService,
-    PageRibbonComponent,
-    ErrorComponent
-} from './layouts';
+import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
 
 @NgModule({
     imports: [
         BrowserModule,
         ChaungKafkaAppRoutingModule,
-        Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
+        Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-' }),
         ChaungKafkaSharedModule,
+        ChaungKafkaCoreModule,
         ChaungKafkaHomeModule,
-        ChaungKafkaAdminModule,
         ChaungKafkaAccountModule,
-        ChaungKafkaEntityModule,
+        ChaungKafkaEntityModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
-    declarations: [
-        JhiMainComponent,
-        NavbarComponent,
-        ErrorComponent,
-        PageRibbonComponent,
-        FooterComponent
-    ],
+    declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
     providers: [
-        ProfileService,
-        PaginationConfig,
-        UserRouteAccessService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
             multi: true,
-            deps: [
-                LocalStorageService,
-                SessionStorageService
-            ]
+            deps: [LocalStorageService, SessionStorageService]
         },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthExpiredInterceptor,
             multi: true,
-            deps: [
-                Injector
-            ]
+            deps: [Injector]
         },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorHandlerInterceptor,
             multi: true,
-            deps: [
-                JhiEventManager
-            ]
+            deps: [JhiEventManager]
         },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: NotificationInterceptor,
             multi: true,
-            deps: [
-                Injector
-            ]
+            deps: [Injector]
         }
     ],
-    bootstrap: [ JhiMainComponent ]
+    bootstrap: [JhiMainComponent]
 })
 export class ChaungKafkaAppModule {}
