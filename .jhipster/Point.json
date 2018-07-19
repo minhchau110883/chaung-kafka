@@ -1,0 +1,55 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "campaign",
+            "otherEntityName": "campaign",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "outletId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "terminalId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "merchantId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "userId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "campaignId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "paymentTransaction",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "paymentType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "amount",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "point",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20180719064031",
+    "dto": "mapstruct",
+    "service": "serviceImpl",
+    "entityTableName": "point",
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination"
+}

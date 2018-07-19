@@ -1,0 +1,14 @@
+version: '2'
+services:
+    chaung_kafka-app:
+        image: chaung_kafka
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:mysql://chaung_kafka-mysql:3306/chaung_kafka?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+        ports:
+            - 8080:8080
+    chaung_kafka-mysql:
+        extends:
+            file: mysql.yml
+            service: chaung_kafka-mysql
