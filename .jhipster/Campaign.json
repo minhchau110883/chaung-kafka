@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "minAmount",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "maxAmount",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "point",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "UserType",
+            "fieldValues": "CUSTOMER,MERCHANT"
+        }
+    ],
+    "changelogDate": "20180719063017",
+    "dto": "mapstruct",
+    "service": "serviceImpl",
+    "entityTableName": "campaign",
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination"
+}
