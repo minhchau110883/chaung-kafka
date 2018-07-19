@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+
 import static com.chaung.kafka.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -74,8 +75,10 @@ public class PointResourceIntTest {
     @Autowired
     private PointRepository pointRepository;
 
+
     @Autowired
     private PointMapper pointMapper;
+    
 
     @Autowired
     private PointService pointService;
@@ -203,6 +206,7 @@ public class PointResourceIntTest {
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())))
             .andExpect(jsonPath("$.[*].point").value(hasItem(DEFAULT_POINT)));
     }
+    
 
     @Test
     @Transactional
@@ -814,7 +818,6 @@ public class PointResourceIntTest {
             .andExpect(jsonPath("$").isEmpty());
     }
 
-
     @Test
     @Transactional
     public void getNonExistingPoint() throws Exception {
@@ -828,10 +831,11 @@ public class PointResourceIntTest {
     public void updatePoint() throws Exception {
         // Initialize the database
         pointRepository.saveAndFlush(point);
+
         int databaseSizeBeforeUpdate = pointRepository.findAll().size();
 
         // Update the point
-        Point updatedPoint = pointRepository.findOne(point.getId());
+        Point updatedPoint = pointRepository.findById(point.getId()).get();
         // Disconnect from session so that the updates on updatedPoint are not directly saved in db
         em.detach(updatedPoint);
         updatedPoint
@@ -878,11 +882,11 @@ public class PointResourceIntTest {
         restPointMockMvc.perform(put("/api/points")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(pointDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Point in the database
         List<Point> pointList = pointRepository.findAll();
-        assertThat(pointList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(pointList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -890,6 +894,7 @@ public class PointResourceIntTest {
     public void deletePoint() throws Exception {
         // Initialize the database
         pointRepository.saveAndFlush(point);
+
         int databaseSizeBeforeDelete = pointRepository.findAll().size();
 
         // Get the point

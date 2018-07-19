@@ -1,64 +1,65 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="point">
+            <h2><span>Point</span> {{point.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Outlet Id</span></dt>
+                <dd>
+                    <span>{{point.outletId}}</span>
+                </dd>
+                <dt><span>Terminal Id</span></dt>
+                <dd>
+                    <span>{{point.terminalId}}</span>
+                </dd>
+                <dt><span>Merchant Id</span></dt>
+                <dd>
+                    <span>{{point.merchantId}}</span>
+                </dd>
+                <dt><span>User Id</span></dt>
+                <dd>
+                    <span>{{point.userId}}</span>
+                </dd>
+                <dt><span>Campaign Id</span></dt>
+                <dd>
+                    <span>{{point.campaignId}}</span>
+                </dd>
+                <dt><span>Payment Transaction</span></dt>
+                <dd>
+                    <span>{{point.paymentTransaction}}</span>
+                </dd>
+                <dt><span>Payment Type</span></dt>
+                <dd>
+                    <span>{{point.paymentType}}</span>
+                </dd>
+                <dt><span>Amount</span></dt>
+                <dd>
+                    <span>{{point.amount}}</span>
+                </dd>
+                <dt><span>Point</span></dt>
+                <dd>
+                    <span>{{point.point}}</span>
+                </dd>
+                <dt><span>Campaign</span></dt>
+                <dd>
+                    <div *ngIf="point.campaignId">
+                        <a [routerLink]="['/campaign', point.campaignId, 'view']">{{point.campaignId}}</a>
+                    </div>
+                </dd>
+            </dl>
 
-<div *ngIf="point">
-    <h2><span>Point</span> {{point.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span>Outlet Id</span></dt>
-        <dd>
-            <span>{{point.outletId}}</span>
-        </dd>
-        <dt><span>Terminal Id</span></dt>
-        <dd>
-            <span>{{point.terminalId}}</span>
-        </dd>
-        <dt><span>Merchant Id</span></dt>
-        <dd>
-            <span>{{point.merchantId}}</span>
-        </dd>
-        <dt><span>User Id</span></dt>
-        <dd>
-            <span>{{point.userId}}</span>
-        </dd>
-        <dt><span>Campaign Id</span></dt>
-        <dd>
-            <span>{{point.campaignId}}</span>
-        </dd>
-        <dt><span>Payment Transaction</span></dt>
-        <dd>
-            <span>{{point.paymentTransaction}}</span>
-        </dd>
-        <dt><span>Payment Type</span></dt>
-        <dd>
-            <span>{{point.paymentType}}</span>
-        </dd>
-        <dt><span>Amount</span></dt>
-        <dd>
-            <span>{{point.amount}}</span>
-        </dd>
-        <dt><span>Point</span></dt>
-        <dd>
-            <span>{{point.point}}</span>
-        </dd>
-        <dt><span>Campaign</span></dt>
-        <dd>
-            <div *ngIf="point.campaignId">
-                <a [routerLink]="['/campaign', point.campaignId]">{{point.campaignId}}</a>
-            </div>
-        </dd>
-    </dl>
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'point/'+ point.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
-    </button>
+            <button type="button"
+                    [routerLink]="['/point', point.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

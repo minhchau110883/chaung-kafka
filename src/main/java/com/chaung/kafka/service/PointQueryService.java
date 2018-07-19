@@ -1,13 +1,12 @@
 package com.chaung.kafka.service;
 
-
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,7 @@ import com.chaung.kafka.service.mapper.PointMapper;
 
 /**
  * Service for executing complex queries for Point entities in the database.
- * The main input is a {@link PointCriteria} which get's converted to {@link Specifications},
+ * The main input is a {@link PointCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
  * It returns a {@link List} of {@link PointDTO} or a {@link Page} of {@link PointDTO} which fulfills the criteria.
  */
@@ -32,7 +31,6 @@ import com.chaung.kafka.service.mapper.PointMapper;
 public class PointQueryService extends QueryService<Point> {
 
     private final Logger log = LoggerFactory.getLogger(PointQueryService.class);
-
 
     private final PointRepository pointRepository;
 
@@ -51,7 +49,7 @@ public class PointQueryService extends QueryService<Point> {
     @Transactional(readOnly = true)
     public List<PointDTO> findByCriteria(PointCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
-        final Specifications<Point> specification = createSpecification(criteria);
+        final Specification<Point> specification = createSpecification(criteria);
         return pointMapper.toDto(pointRepository.findAll(specification));
     }
 
@@ -64,16 +62,16 @@ public class PointQueryService extends QueryService<Point> {
     @Transactional(readOnly = true)
     public Page<PointDTO> findByCriteria(PointCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
-        final Specifications<Point> specification = createSpecification(criteria);
-        final Page<Point> result = pointRepository.findAll(specification, page);
-        return result.map(pointMapper::toDto);
+        final Specification<Point> specification = createSpecification(criteria);
+        return pointRepository.findAll(specification, page)
+            .map(pointMapper::toDto);
     }
 
     /**
-     * Function to convert PointCriteria to a {@link Specifications}
+     * Function to convert PointCriteria to a {@link Specification}
      */
-    private Specifications<Point> createSpecification(PointCriteria criteria) {
-        Specifications<Point> specification = Specifications.where(null);
+    private Specification<Point> createSpecification(PointCriteria criteria) {
+        Specification<Point> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildSpecification(criteria.getId(), Point_.id));

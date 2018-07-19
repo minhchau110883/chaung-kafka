@@ -1,74 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
 
-import { Point } from './point.model';
-import { createRequestOption } from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IPoint } from 'app/shared/model/point.model';
 
-export type EntityResponseType = HttpResponse<Point>;
+type EntityResponseType = HttpResponse<IPoint>;
+type EntityArrayResponseType = HttpResponse<IPoint[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PointService {
+    private resourceUrl = SERVER_API_URL + 'api/points';
 
-    private resourceUrl =  SERVER_API_URL + 'api/points';
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
-
-    create(point: Point): Observable<EntityResponseType> {
-        const copy = this.convert(point);
-        return this.http.post<Point>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    create(point: IPoint): Observable<EntityResponseType> {
+        return this.http.post<IPoint>(this.resourceUrl, point, { observe: 'response' });
     }
 
-    update(point: Point): Observable<EntityResponseType> {
-        const copy = this.convert(point);
-        return this.http.put<Point>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    update(point: IPoint): Observable<EntityResponseType> {
+        return this.http.put<IPoint>(this.resourceUrl, point, { observe: 'response' });
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<Point>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
+        return this.http.get<IPoint>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    query(req?: any): Observable<HttpResponse<Point[]>> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<Point[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Point[]>) => this.convertArrayResponse(res));
+        return this.http.get<IPoint[]>(this.resourceUrl, { params: options, observe: 'response' });
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: Point = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<Point[]>): HttpResponse<Point[]> {
-        const jsonResponse: Point[] = res.body;
-        const body: Point[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to Point.
-     */
-    private convertItemFromServer(point: Point): Point {
-        const copy: Point = Object.assign({}, point);
-        return copy;
-    }
-
-    /**
-     * Convert a Point to a JSON which can be sent to the server.
-     */
-    private convert(point: Point): Point {
-        const copy: Point = Object.assign({}, point);
-        return copy;
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 }

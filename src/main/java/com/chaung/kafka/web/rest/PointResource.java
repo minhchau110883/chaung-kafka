@@ -78,7 +78,7 @@ public class PointResource {
     public ResponseEntity<PointDTO> updatePoint(@RequestBody PointDTO pointDTO) throws URISyntaxException {
         log.debug("REST request to update Point : {}", pointDTO);
         if (pointDTO.getId() == null) {
-            return createPoint(pointDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         PointDTO result = pointService.save(pointDTO);
         return ResponseEntity.ok()
@@ -112,8 +112,8 @@ public class PointResource {
     @Timed
     public ResponseEntity<PointDTO> getPoint(@PathVariable Long id) {
         log.debug("REST request to get Point : {}", id);
-        PointDTO pointDTO = pointService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(pointDTO));
+        Optional<PointDTO> pointDTO = pointService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(pointDTO);
     }
 
     /**

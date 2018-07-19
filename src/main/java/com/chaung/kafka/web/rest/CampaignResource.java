@@ -78,7 +78,7 @@ public class CampaignResource {
     public ResponseEntity<CampaignDTO> updateCampaign(@RequestBody CampaignDTO campaignDTO) throws URISyntaxException {
         log.debug("REST request to update Campaign : {}", campaignDTO);
         if (campaignDTO.getId() == null) {
-            return createCampaign(campaignDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         CampaignDTO result = campaignService.save(campaignDTO);
         return ResponseEntity.ok()
@@ -112,8 +112,8 @@ public class CampaignResource {
     @Timed
     public ResponseEntity<CampaignDTO> getCampaign(@PathVariable Long id) {
         log.debug("REST request to get Campaign : {}", id);
-        CampaignDTO campaignDTO = campaignService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(campaignDTO));
+        Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(campaignDTO);
     }
 
     /**

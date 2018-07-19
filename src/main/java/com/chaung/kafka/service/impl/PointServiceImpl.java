@@ -7,12 +7,14 @@ import com.chaung.kafka.service.dto.PointDTO;
 import com.chaung.kafka.service.mapper.PointMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Optional;
 /**
  * Service Implementation for managing Point.
  */
@@ -59,6 +61,7 @@ public class PointServiceImpl implements PointService {
             .map(pointMapper::toDto);
     }
 
+
     /**
      * Get one point by id.
      *
@@ -67,10 +70,10 @@ public class PointServiceImpl implements PointService {
      */
     @Override
     @Transactional(readOnly = true)
-    public PointDTO findOne(Long id) {
+    public Optional<PointDTO> findOne(Long id) {
         log.debug("Request to get Point : {}", id);
-        Point point = pointRepository.findOne(id);
-        return pointMapper.toDto(point);
+        return pointRepository.findById(id)
+            .map(pointMapper::toDto);
     }
 
     /**
@@ -81,6 +84,6 @@ public class PointServiceImpl implements PointService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Point : {}", id);
-        pointRepository.delete(id);
+        pointRepository.deleteById(id);
     }
 }

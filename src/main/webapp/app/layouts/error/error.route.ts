@@ -8,16 +8,16 @@ export const errorRoute: Routes = [
         component: ErrorComponent,
         data: {
             authorities: [],
-            pageTitle: 'Error page!'
-        },
+            pageTitle: 'chaung_kafka'
+        }
     },
     {
         path: 'accessdenied',
         component: ErrorComponent,
         data: {
             authorities: [],
-            pageTitle: 'Error page!',
+            pageTitle: 'chaung_kafka',
             error403: true
-        },
+        }
     }
 ];

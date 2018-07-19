@@ -1,54 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { ChaungKafkaTestModule } from '../../../test.module';
-import { CampaignDetailComponent } from '../../../../../../main/webapp/app/entities/campaign/campaign-detail.component';
-import { CampaignService } from '../../../../../../main/webapp/app/entities/campaign/campaign.service';
-import { Campaign } from '../../../../../../main/webapp/app/entities/campaign/campaign.model';
+import { CampaignDetailComponent } from 'app/entities/campaign/campaign-detail.component';
+import { Campaign } from 'app/shared/model/campaign.model';
 
 describe('Component Tests', () => {
-
     describe('Campaign Management Detail Component', () => {
         let comp: CampaignDetailComponent;
         let fixture: ComponentFixture<CampaignDetailComponent>;
-        let service: CampaignService;
+        const route = ({ data: of({ campaign: new Campaign(123) }) } as any) as ActivatedRoute;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [ChaungKafkaTestModule],
                 declarations: [CampaignDetailComponent],
-                providers: [
-                    CampaignService
-                ]
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
-            .overrideTemplate(CampaignDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(CampaignDetailComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(CampaignDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(CampaignService);
         });
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
                 // GIVEN
 
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new Campaign(123)
-                })));
-
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.campaign).toEqual(jasmine.objectContaining({id: 123}));
+                expect(comp.campaign).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });
-
 });
